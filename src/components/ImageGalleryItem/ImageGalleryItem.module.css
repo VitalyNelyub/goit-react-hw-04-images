@@ -1,0 +1,16 @@
+.gallery__item {
+  width: 400px;
+  height: 300px;
+  box-shadow: 10px 15px 5px rgba(147, 144, 144, 0.56);
+  transition: all 250ms;
+}
+
+.gallery__item:hover {
+  transform: scale(1.05);
+}
+
+.gallery__img {
+  width: 400px;
+  height: 300px;
+  object-fit: cover;
+}

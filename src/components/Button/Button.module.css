@@ -1,0 +1,15 @@
+.load__moreBtn {
+  display: block;
+  margin: 50px auto;
+  font-size: 26px;
+  padding: 8px 18px;
+  background-color: #4c71df;
+  border: none;
+  border-radius: 12px;
+  transition: all 250ms;
+}
+
+.load__moreBtn:hover {
+  background-color: rgb(106, 148, 14);
+  color: #fff;
+}
