@@ -1,37 +1,26 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import css from '../ImageGalleryItem/ImageGalleryItem.module.css';
 
-class ImageGalleryItem extends Component {
-  state = {
-    currentImage: null,
-  };
+export default function ImageGalleryItem({ showModal, images }) {
+  const [currentImage, setCurrentImage] = useState(null);
 
-  showModalImg = image => {
-    this.setState({ currentImage: image });
-    this.props.showModal(this.state.currentImage);
-  };
-
-  showImage = e => {
+  const showImage = e => {
     e.preventDefault();
-    this.setState({ currentImage: e.target.src });
-    this.props.showModal(e.target.src);
+    setCurrentImage(e.target.src);
+    showModal(currentImage);
   };
 
-  render() {
-    if (this.props.images)
-      return this.props.images.map(img => {
-        return (
-          <li key={img.id} className={css.gallery__item}>
-              <img
-                src={img.webformatURL}
-                className={css.gallery__img}
-                alt={img.tags}
-                onClick={this.showImage}
-              />
-          </li>
-        );
-      });
-  }
+  if (images)
+    return images.map(img => {
+      return (
+        <li key={img.id} className={css.gallery__item}>
+          <img
+            src={img.webformatURL}
+            className={css.gallery__img}
+            alt={img.tags}
+            onClick={showImage}
+          />
+        </li>
+      );
+    });
 }
-
-export default ImageGalleryItem;

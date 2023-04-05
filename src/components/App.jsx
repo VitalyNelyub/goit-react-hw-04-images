@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Loader from './Loader/Loader';
@@ -6,78 +6,67 @@ import Button from './Button/Button';
 import Modal from './Modal/Modal';
 import { fetchImages } from '../components/Srvice/Fetch';
 
-class App extends Component {
-  state = {
-    value: '',
-    images: null,
-    page: 1,
-    isHidden: false,
-    loader: false,
-    modalImg: '',
-  };
+export default function App() {
+  const [value, setValue] = useState('');
+  const [images, setImages] = useState([]);
+  const [page, setPage] = useState(1);
+  const [isHidden, setIsHidden] = useState(false);
+  const [loader, setLoader] = useState(false);
+  const [modalImg, setModalImg] = useState('');
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.value !== this.state.value) {
-      this.setState({ loader: true });
-      fetchImages(this.state.value, this.state.page).then(data =>
-        this.setState({
-          images: data.data.hits,
-          isHidden: true,
-          loader: false,
-          // page: 1,
-        })
-      );
-      // .finally(this.setState({ loader: false }));
+  useEffect(() => {
+    if (!value) {
+      return;
     }
-  }
+    setLoader(true);
+    fetchImages(value, page).then(
+      data => setImages(data.data.hits),
+      setLoader(false),
+      setIsHidden(true)
+    );
+  }, [page, value]);
 
-  resetPage = () => {
-    this.setState({ page: 1 });
+
+  const resetPage = () => {
+    setPage(1);
   };
 
-  showModal = image => {
-    this.setState({ modalImg: image });
+  const showModal = image => {
+    setModalImg(image);
   };
 
-  hideModal = () => {
-    this.setState({ modalImg: '' });
+  const hideModal = () => {
+    setModalImg('');
   };
 
-  getCurrentFetchValue = currentValue => {
-    this.setState({ value: currentValue });
+  const getCurrentFetchValue = currentValue => {
+    setValue(currentValue);
   };
 
-  loadMore = () => {
-    const nextPage = this.state.page + 1;
-    fetchImages(this.state.value, nextPage).then(data => {
+  const loadMore = () => {
+    const nextPage = page + 1;
+    fetchImages(value, nextPage).then(data => {
       if (data.data.hits.length === 0) {
-        this.setState({ isHidden: false });
+        setIsHidden(false);
         alert('No more photo');
       }
-      this.setState(prevState => ({
-        images: [...prevState.images, ...data.data.hits],
-        page: nextPage,
-      }));
+      // setImages([...images, ...data.data.hits]);
+      setPage(nextPage);
     });
   };
 
-  render() {
-    return (
-      <div>
-        <Searchbar getCurrentFetchValue={this.getCurrentFetchValue} resetPage={this.resetPage} />
-        {this.state.modalImg && (
-          <Modal modalImg={this.state.modalImg} hideModal={this.hideModal} />
-        )}
+  return (
+    <div>
+      <Searchbar
+        getCurrentFetchValue={getCurrentFetchValue}
+        resetPage={resetPage}
+      />
+      {modalImg && <Modal modalImg={modalImg} hideModal={hideModal} />}
 
-        {<ImageGallery images={this.state.images} showModal={this.showModal} />}
+      {<ImageGallery images={images} showModal={showModal} />}
 
-        {this.state.loader && <Loader />}
-        {this.state.isHidden && (
-          <Button currentValue={this.state.value} loadMore={this.loadMore} />
-        )}
-      </div>
-    );
-  }
+      {loader && <Loader />}
+      {isHidden && <Button currentValue={value} loadMore={loadMore} />}
+    </div>
+  );
 }
-
-export default App;

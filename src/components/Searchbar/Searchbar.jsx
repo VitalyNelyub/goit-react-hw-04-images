@@ -1,46 +1,44 @@
-import { Component } from 'react';
+import { useState } from 'react';
+
 import css from '../Searchbar/Searchbar.module.css';
 
-class Searchbar extends Component {
-  state = {
-    value: '',
+export default function Searchbar({
+  getCurrentFetchValue,
+  resetPage,
+  currentValue,
+}) {
+  const [value, setValue] = useState('');
+
+  const handleChangeStarch = e => {
+    setValue(e.target.value);
   };
 
-  handleChangeStarch = e => {
-    this.setState({ value: e.target.value });
-  };
-
-  getInputValue = e => {
+  const getInputValue = e => {
     e.preventDefault();
-    const { value } = this.state;
-    if (value !== this.props.currentValue) {
-      this.props.getCurrentFetchValue(value);
-      this.props.resetPage();
+    if (value !== currentValue) {
+      getCurrentFetchValue(value);
+      resetPage();
     }
-    this.props.getCurrentFetchValue(value);
+    getCurrentFetchValue(value);
   };
 
-  render() {
-    return (
-      <>
-        <header className={css.searchbar}>
-          <form className={css.searchForm} onSubmit={this.getInputValue}>
-            <button type="submit" className={css.button}>
-              <span className={css.button__label}>Search</span>
-            </button>
+  return (
+    <>
+      <header className={css.searchbar}>
+        <form className={css.searchForm} onSubmit={getInputValue}>
+          <button type="submit" className={css.button}>
+            <span className={css.button__label}>Search</span>
+          </button>
 
-            <input
-              className={css.input}
-              type="text"
-              placeholder="Search images and photos"
-              onChange={this.handleChangeStarch}
-              value={this.state.value}
-            />
-          </form>
-        </header>
-      </>
-    );
-  }
+          <input
+            className={css.input}
+            type="text"
+            placeholder="Search images and photos"
+            onChange={handleChangeStarch}
+            value={value}
+          />
+        </form>
+      </header>
+    </>
+  );
 }
-
-export default Searchbar;
