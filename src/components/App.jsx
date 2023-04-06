@@ -13,19 +13,23 @@ export default function App() {
   const [isHidden, setIsHidden] = useState(false);
   const [loader, setLoader] = useState(false);
   const [modalImg, setModalImg] = useState('');
+  // const [newValue, setNewValue] = useState('');
 
   useEffect(() => {
     if (!value) {
       return;
     }
     setLoader(true);
-    fetchImages(value, page).then(
-      data => setImages(data.data.hits),
+    // fetchImages(value, page).then(
+    //   data => setImages([...images, ...data.data.hits]),
+    fetchImages(value, page).then(data => {
+      setImages(prevImages => [...prevImages, ...data.data.hits])
+    },
+      console.log('ответ из єффекта'),
       setLoader(false),
       setIsHidden(true)
     );
   }, [page, value]);
-
 
   const resetPage = () => {
     setPage(1);
@@ -40,19 +44,12 @@ export default function App() {
   };
 
   const getCurrentFetchValue = currentValue => {
-    setValue(currentValue);
+    if (value !== currentValue) setValue(currentValue);
+    setImages([]);
   };
 
   const loadMore = () => {
-    const nextPage = page + 1;
-    fetchImages(value, nextPage).then(data => {
-      if (data.data.hits.length === 0) {
-        setIsHidden(false);
-        alert('No more photo');
-      }
-      // setImages([...images, ...data.data.hits]);
-      setPage(nextPage);
-    });
+    setPage(page + 1);
   };
 
   return (

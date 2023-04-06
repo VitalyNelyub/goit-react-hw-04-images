@@ -16,7 +16,7 @@ export default function Searchbar({
   const getInputValue = e => {
     e.preventDefault();
     if (value !== currentValue) {
-      getCurrentFetchValue(value);
+      getCurrentFetchValue(currentValue);
       resetPage();
     }
     getCurrentFetchValue(value);
