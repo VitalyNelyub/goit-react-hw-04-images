@@ -1,4 +1,5 @@
 import css from '../ImageGalleryItem/ImageGalleryItem.module.css';
+import PropTypes from 'prop-types';
 
 export default function ImageGalleryItem({ showModal, images }) {
 
@@ -21,3 +22,8 @@ export default function ImageGalleryItem({ showModal, images }) {
       );
     });
 }
+
+ImageGalleryItem.propTypes = {
+  showModal: PropTypes.func.isRequired,
+  images: PropTypes.array.isRequired,
+};

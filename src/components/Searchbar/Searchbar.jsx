@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import css from '../Searchbar/Searchbar.module.css';
 
@@ -42,3 +43,9 @@ export default function Searchbar({
     </>
   );
 }
+
+Searchbar.propTypes = {
+  getCurrentFetchValue: PropTypes.func.isRequired,
+  resetPage: PropTypes.func.isRequired,
+  currentValue: PropTypes.string,
+};
