@@ -21,10 +21,15 @@ export default function App() {
     setLoader(true);
     fetchImages(value, page).then(
       data => {
-        setImages(prevImages => [...prevImages, ...data.data.hits]);
+        if (data.data.hits.length !== 0) {
+          setImages(prev => [...prev, ...data.data.hits]);
+          setIsHidden(true)
+        } else {
+          setIsHidden(false)
+          alert('No more photo')
+        }        
       },
       setLoader(false),
-      setIsHidden(true)
     );
   }, [page, value]);
 
@@ -46,7 +51,11 @@ export default function App() {
   };
 
   const loadMore = () => {
-    setPage(page + 1);
+    setPage(page + 1);  
+      // if (images.length === 0) {
+      //   this.setState({ isHidden: false });
+      //   alert('No more photo');
+      // }
   };
 
   return (

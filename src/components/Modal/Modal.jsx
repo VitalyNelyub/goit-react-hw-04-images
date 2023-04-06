@@ -3,8 +3,15 @@ import css from '../Modal/Modal.module.css';
 import PropTypes from 'prop-types';
 
 export default function Modal({ hideModal, modalImg }) {
+
   useEffect(() => {
+    // console.log('add')
     window.addEventListener('keydown', pressEsc);
+
+    return () => {
+      // console.log('remove')
+      window.removeEventListener('keydown', pressEsc);
+    };
   });
 
   const pressEsc = e => {
