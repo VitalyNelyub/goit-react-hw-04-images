@@ -13,19 +13,16 @@ export default function App() {
   const [isHidden, setIsHidden] = useState(false);
   const [loader, setLoader] = useState(false);
   const [modalImg, setModalImg] = useState('');
-  // const [newValue, setNewValue] = useState('');
 
   useEffect(() => {
     if (!value) {
       return;
     }
     setLoader(true);
-    // fetchImages(value, page).then(
-    //   data => setImages([...images, ...data.data.hits]),
-    fetchImages(value, page).then(data => {
-      setImages(prevImages => [...prevImages, ...data.data.hits])
-    },
-      console.log('ответ из єффекта'),
+    fetchImages(value, page).then(
+      data => {
+        setImages(prevImages => [...prevImages, ...data.data.hits]);
+      },
       setLoader(false),
       setIsHidden(true)
     );

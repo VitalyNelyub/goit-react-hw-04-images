@@ -1,13 +1,10 @@
-import { useState } from 'react';
 import css from '../ImageGalleryItem/ImageGalleryItem.module.css';
 
 export default function ImageGalleryItem({ showModal, images }) {
-  const [currentImage, setCurrentImage] = useState(null);
 
   const showImage = e => {
     e.preventDefault();
-    setCurrentImage(e.target.src);
-    showModal(currentImage);
+    showModal(e.target.src);
   };
 
   if (images)
